@@ -1,17 +1,53 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import fetch from "node-fetch";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+let data = {
+  
+};
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+function get(matches,year){
+for (let i = 1; i <= 13; i++) {
+  fetch(
+    `https://jsonmock.hackerrank.com/api/football_matches?competition=UEFA%20Champions%20League&year=${year}&page=${i}`
+    )
+    .then((response) => response.json())
+    .then((res) => {
+      let teams = [];
+      res.data.map((e) => {
+        teams = [...teams, e.team1, e.team2];
+      });
+      
+      return teams;
+      
+    })
+    .then((res) => {
+     res.map(e => {
+      if(data[e]){
+        
+        data[e] += 1;
+      } else {
+        data[e] = 1
+      }
+    })
+
+    console.log(data)
+    for(const i in data){
+    
+      if(data[i]>=matches){
+        console.log(i)
+      }
+    }
+  
+
+    });
+   
+}
+}
+
+get(9,2012)
+
+
+
+
+
+
+
